@@ -9,7 +9,9 @@ async function main() {
     app.listen(config.port, () => {
       console.log(`The server is running at http://localhost:${config.port}`)
     })
-  } catch (error) {}
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 main()
