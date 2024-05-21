@@ -1,5 +1,3 @@
-
-
 export type Inventory = {
   quantity: number
   inStock: boolean

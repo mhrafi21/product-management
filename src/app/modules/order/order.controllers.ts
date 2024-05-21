@@ -15,7 +15,7 @@ const createOrder = async (req: Request, res: Response) => {
       })
     }
 
-    const result = await createOrderIntoDB(req.body as Order);
+    const result = await createOrderIntoDB(req.body as Order)
 
     res.status(200).json({
       success: true,

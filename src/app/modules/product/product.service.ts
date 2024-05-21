@@ -2,24 +2,19 @@ import { Product } from './product.interface'
 import { ProductModel } from './product.model'
 
 const createProductIntoDB = async (product: Product) => {
-
-
-  const isExist = await ProductModel.findOne({name: product.name})
-  console.log(isExist);
-  if(!isExist){
+  const isExist = await ProductModel.findOne({ name: product.name })
+  console.log(isExist)
+  if (!isExist) {
     const result = await ProductModel.create(product)
     return result
-  }else{
-      return {
-        message: "Product is exist"
-      }
-    
+  } else {
+    return {
+      message: 'Product is exist',
+    }
   }
-
 }
 
 const getProductIntoDB = async (searchTerm: string) => {
-
   if (!searchTerm) {
     const result = await ProductModel.find({})
     return result
@@ -31,7 +26,7 @@ const getProductIntoDB = async (searchTerm: string) => {
         { name: new RegExp(searchTerm, 'i') },
       ],
     })
-    return result;
+    return result
   }
 }
 
@@ -55,7 +50,6 @@ const deleteSpecificProductIntoDB = async (productId: string) => {
   const result = ProductModel.findByIdAndDelete(productId)
   return result
 }
-
 
 export {
   createProductIntoDB,

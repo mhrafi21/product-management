@@ -1,6 +1,5 @@
 import express from 'express'
 import {
-
   createProduct,
   deleteProduct,
   getProducts,
@@ -14,6 +13,5 @@ router.get('/products', getProducts)
 router.get('/products/:productId', getSpecificProduct)
 router.put('/products/:productId', updateProduct)
 router.delete('/products/:productId', deleteProduct)
-
 
 export const ProductRoutes = router

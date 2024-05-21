@@ -22,5 +22,4 @@ const productJoiSchema = Joi.object({
   inventory: inventorySchema.required(),
 })
 
-
-export default productJoiSchema;
+export default productJoiSchema
