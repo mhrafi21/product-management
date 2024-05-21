@@ -1,7 +1,8 @@
 import { Request, Response } from 'express'
-import { createOrderIntoDB, getOrderIntoDB } from './order.service'
-import { Order } from './order.interface'
+import { getOrderIntoDB } from './order.service'
 import { orderJoiSchema } from './order.validation'
+import { ProductModel } from '../product/product.model'
+import { OrderModel } from './order.model'
 
 const createOrder = async (req: Request, res: Response) => {
   try {
@@ -15,8 +16,50 @@ const createOrder = async (req: Request, res: Response) => {
       })
     }
 
-    const result = await createOrderIntoDB(req.body as Order)
+    const orderProduct = await ProductModel.findById(req.body?.productId);
 
+    if (!orderProduct)
+      return res.status(500).json({
+        success: false,
+        message: 'Order not found!',
+      })
+
+    if (req.body.quantity > orderProduct?.inventory?.quantity) {
+      return res.status(500).json({
+        success: false,
+        message: 'Insufficient quantity available in inventory!',
+      })
+    }
+
+    if (req.body.quantity === 0) {
+      await ProductModel.findOneAndUpdate(
+        { _id: req.body.productId },
+        { $set: { 'inventory.inStock': false } },
+        {
+          new: true,
+        },
+      )
+    } else {
+      await ProductModel.findOneAndUpdate(
+        { _id: req.body.productId },
+        { $set: { 'inventory.inStock': true } },
+        {
+          new: true,
+        },
+      )
+    }
+
+    const newQuantity = orderProduct.inventory.quantity - req.body.quantity
+
+    await ProductModel.findOneAndUpdate(
+      { _id: req.body.productId },
+      { $set: { 'inventory.quantity': newQuantity } },
+      {
+        new: true,
+      },
+    )
+
+    const result = await OrderModel.create(req.body)
     res.status(200).json({
       success: true,
       message: 'Order created successfully!',
