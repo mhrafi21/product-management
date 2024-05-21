@@ -1,20 +1,22 @@
 import { Request, Response } from 'express'
 import { createOrderIntoDB, getOrderIntoDB } from './order.service'
-import productJoiSchema from '../product/product.validation'
+import { Order } from './order.interface'
+import { orderJoiSchema } from './order.validation'
 
 const createOrder = async (req: Request, res: Response) => {
   try {
-    const { error } = productJoiSchema.validate(req.body)
+    const { error } = orderJoiSchema.validate(req.body)
 
     if (error) {
       return res.status(500).json({
         success: false,
         message: 'field can not be empty',
-        error: error,
+        error: error.details[0].message,
       })
     }
 
-    const result = await createOrderIntoDB(req.body)
+    const result = await createOrderIntoDB(req.body as Order);
+
     res.status(200).json({
       success: true,
       message: 'Order created successfully!',
