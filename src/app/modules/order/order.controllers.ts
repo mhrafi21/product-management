@@ -24,19 +24,20 @@ const getOrders = async (req: Request, res: Response) => {
   try {
     const result = await getOrderIntoDB(req.query.email as string)
 
-    if (!req.query.email) {
-      res.status(200).json({
-        success: true,
-        message: 'Order fetched successfully!',
-        data: result,
-      })
-    } else {
+    if (req.query.email) {
       res.status(200).json({
         success: true,
         message: 'Orders fetched successfully for user email!',
         data: result,
       })
+    } else {
+      res.status(200).json({
+        success: true,
+        message: 'Order fetched successfully!',
+        data: result,
+      })
     }
+    
   } catch (error) {
     res.status(500).json({
       success: false,
