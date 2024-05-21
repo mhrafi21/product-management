@@ -14,7 +14,7 @@ const getOrderIntoDB = async(email: string) => {
         const result = await OrderModel.find({});
         return result;
     }else{
-        const result = await OrderModel.find({email});
+        const result = await OrderModel.find({email: email});
         return result;
     }
 }

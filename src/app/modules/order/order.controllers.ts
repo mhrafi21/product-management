@@ -24,7 +24,7 @@ const getOrders = async (req: Request, res: Response) => {
   try {
     const result = await getOrderIntoDB(req.query.email as string)
 
-    if (req.query.email) {
+    if (!req.query.email) {
       res.status(200).json({
         success: true,
         message: 'Order fetched successfully!',
