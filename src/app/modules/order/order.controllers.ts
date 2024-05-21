@@ -1,8 +1,19 @@
 import { Request, Response } from 'express'
 import { createOrderIntoDB, getOrderIntoDB } from './order.service'
+import productJoiSchema from '../product/product.validation'
 
 const createOrder = async (req: Request, res: Response) => {
   try {
+    const { error } = productJoiSchema.validate(req.body)
+
+    if (error) {
+      return res.status(500).json({
+        success: false,
+        message: 'field can not be empty',
+        error: error,
+      })
+    }
+
     const result = await createOrderIntoDB(req.body)
     res.status(200).json({
       success: true,
@@ -18,7 +29,7 @@ const createOrder = async (req: Request, res: Response) => {
   }
 }
 
-// get orders
+// get orders by email
 
 const getOrders = async (req: Request, res: Response) => {
   try {
@@ -37,7 +48,6 @@ const getOrders = async (req: Request, res: Response) => {
         data: result,
       })
     }
-    
   } catch (error) {
     res.status(500).json({
       success: false,

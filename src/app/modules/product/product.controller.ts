@@ -6,9 +6,20 @@ import {
   getSpecificProductIntoDB,
   updateSpecificProductIntoDB,
 } from './product.service'
+import productJoiSchema from './product.validation'
 
 const createProduct = async (req: Request, res: Response) => {
   try {
+    const { error } = productJoiSchema.validate(req.body)
+
+    if (error) {
+      return res.status(500).json({
+        success: false,
+        message: 'Something went wrong',
+        error: error,
+      })
+    }
+
     const result = await createProductIntoDB(req.body)
     res.status(200).json({
       success: true,
@@ -71,6 +82,18 @@ const getSpecificProduct = async (req: Request, res: Response) => {
 // update product
 const updateProduct = async (req: Request, res: Response) => {
   try {
+    // validation using Joi
+
+    const { error } = productJoiSchema.validate(req.body)
+
+    if (error) {
+      return res.status(500).json({
+        success: false,
+        message: 'all field is required',
+        error: error,
+      })
+    }
+
     const result = await updateSpecificProductIntoDB(
       req.params.productId,
       req.body,
@@ -109,13 +132,10 @@ const deleteProduct = async (req: Request, res: Response) => {
 
 // create new order
 
-
-
 export {
   createProduct,
   getProducts,
   getSpecificProduct,
   updateProduct,
   deleteProduct,
-
 }

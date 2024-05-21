@@ -2,8 +2,20 @@ import { Product } from './product.interface'
 import { ProductModel } from './product.model'
 
 const createProductIntoDB = async (product: Product) => {
-  const result = await ProductModel.create(product)
-  return result
+
+
+  const isExist = await ProductModel.findOne({name: product.name})
+  console.log(isExist);
+  if(!isExist){
+    const result = await ProductModel.create(product)
+    return result
+  }else{
+      return {
+        message: "Product is exist"
+      }
+    
+  }
+
 }
 
 const getProductIntoDB = async (searchTerm: string) => {
