@@ -22,6 +22,7 @@ Order management -
 - Retrieve orders by user email
 
 inventory Update - 
+
 - The system checks the available quantity in inventory when user adding a product
 - if the ordered quantity exceeds the available quantity it returns insufficient stock
 - If the inventory quantity reaches zero, inStock sets false otherwise stays true
