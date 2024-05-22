@@ -3,7 +3,6 @@ import { ProductModel } from './product.model'
 
 const createProductIntoDB = async (product: Product) => {
   const isExist = await ProductModel.findOne({ name: product.name })
-  console.log(isExist)
   if (!isExist) {
     const result = await ProductModel.create(product)
     return result
@@ -43,12 +42,12 @@ const updateSpecificProductIntoDB = async (
     new: true,
     runValidators: true,
   })
-  return result
+  return result;
 }
 
 const deleteSpecificProductIntoDB = async (productId: string) => {
   const result = ProductModel.findByIdAndDelete(productId)
-  return result
+  return result;
 }
 
 export {
